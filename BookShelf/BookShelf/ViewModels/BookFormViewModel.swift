@@ -49,4 +49,8 @@ final class BookFormViewModel: ObservableObject {
         author = ""
         isbn = ""
     }
+    
+    func simulateScanISBN() -> String {
+        return "978" + String(Int.random(in: 1000000000...9999999999))
+    }
 }

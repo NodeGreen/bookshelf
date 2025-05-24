@@ -10,39 +10,45 @@ import SwiftUI
 
 struct BookFormView: View {
     
-    @StateObject var viewModel: BookFormViewModel = BookFormViewModel()
-    
-    var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Titolo")) {
-                    TextField("Inserisci titolo", text: $viewModel.title)
-                }
-                
-                Section(header: Text("Autore")) {
-                    TextField("Inserisci autore", text: $viewModel.author)
-                }
-                
-                Section(header: Text("ISBN")) {
-                    TextField("Inserisci ISBN", text: $viewModel.isbn)
-                        .keyboardType(.numberPad)
-                }
+    @ObservedObject var viewModel: BookFormViewModel
+    var prefillISBN: String? = nil
 
-                Section {
-                    Button("Salva libro") {
-                        viewModel.saveBook()
-                    }
-                    .disabled(!viewModel.canSave)
-                }
-                NavigationLink("Vedi libreria") {
-                    LibraryView(viewModel: viewModel)
-                }
+    var body: some View {
+        Form {
+            Section(header: Text("Titolo")) {
+                TextField("Inserisci titolo", text: $viewModel.title)
             }
-            .navigationTitle("Nuovo Libro")
+            
+            Section(header: Text("Autore")) {
+                TextField("Inserisci autore", text: $viewModel.author)
+            }
+            
+            Section(header: Text("ISBN")) {
+                TextField("Inserisci ISBN", text: $viewModel.isbn)
+                    .keyboardType(.numberPad)
+            }
+
+            Section {
+                Button("Salva libro") {
+                    viewModel.saveBook()
+                }
+                .disabled(!viewModel.canSave)
+            }
+
+            NavigationLink("Vedi libreria") {
+                LibraryView(viewModel: viewModel)
+            }
+        }
+        .navigationTitle("Nuovo Libro")
+        .onAppear {
+            if let prefill = prefillISBN, viewModel.isbn.isEmpty {
+                viewModel.isbn = prefill
+            }
         }
     }
 }
 
+
 #Preview {
-    BookFormView()
+    BookFormView(viewModel: BookFormViewModel())
 }
