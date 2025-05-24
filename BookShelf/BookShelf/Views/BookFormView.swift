@@ -32,7 +32,7 @@ struct BookFormView: View {
                     Button("Salva libro") {
                         // TODO
                     }
-                    .disabled(true)
+                    .disabled(!viewModel.canSave)
                 }
             }
             .navigationTitle("Nuovo Libro")
