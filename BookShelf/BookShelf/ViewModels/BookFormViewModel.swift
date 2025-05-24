@@ -43,6 +43,10 @@ final class BookFormViewModel: ObservableObject {
         
         resetForm()
     }
+    
+    func deleteBook(at offsets: IndexSet) {
+        savedBooks.remove(atOffsets: offsets)
+    }
 
     private func resetForm() {
         title = ""

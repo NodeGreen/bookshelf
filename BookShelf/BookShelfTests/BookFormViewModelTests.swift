@@ -114,4 +114,44 @@ final class BookFormViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.author, "")
         XCTAssertEqual(viewModel.isbn, "")
     }
+    
+    func testDeleteBookRemovesBook() {
+        let viewModel = BookFormViewModel(
+            titleValidator: AlwaysValidValidator(),
+            authorValidator: AlwaysValidValidator(),
+            isbnValidator: AlwaysValidValidator()
+        )
+
+        viewModel.title = "1984"
+        viewModel.author = "George Orwell"
+        viewModel.isbn = "9780451524935"
+        viewModel.saveBook()
+
+        XCTAssertEqual(viewModel.savedBooks.count, 1)
+
+        viewModel.deleteBook(at: IndexSet(integer: 0))
+
+        XCTAssertEqual(viewModel.savedBooks.count, 0)
+    }
+    
+    func testDeleteBookWithInvalidIndexDoesNothing() {
+        let viewModel = BookFormViewModel(
+            titleValidator: AlwaysValidValidator(),
+            authorValidator: AlwaysValidValidator(),
+            isbnValidator: AlwaysValidValidator()
+        )
+
+        viewModel.title = "Brave New World"
+        viewModel.author = "Aldous Huxley"
+        viewModel.isbn = "9780060850524"
+        viewModel.saveBook()
+
+        XCTAssertEqual(viewModel.savedBooks.count, 1)
+
+        viewModel.deleteBook(at: IndexSet(integer: 5))
+
+        XCTAssertEqual(viewModel.savedBooks.count, 1)
+    }
+
+
 }
