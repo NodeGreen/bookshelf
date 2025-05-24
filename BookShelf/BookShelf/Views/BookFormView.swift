@@ -30,9 +30,12 @@ struct BookFormView: View {
 
                 Section {
                     Button("Salva libro") {
-                        // TODO
+                        viewModel.saveBook()
                     }
                     .disabled(!viewModel.canSave)
+                }
+                NavigationLink("Vedi libreria") {
+                    LibraryView(viewModel: viewModel)
                 }
             }
             .navigationTitle("Nuovo Libro")

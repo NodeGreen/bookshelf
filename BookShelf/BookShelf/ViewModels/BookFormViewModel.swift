@@ -15,6 +15,8 @@ final class BookFormViewModel: ObservableObject {
     @Published var author: String = ""
     @Published var isbn: String = ""
     
+    @Published private(set) var savedBooks: [Book] = []
+    
     private let titleValidator: FieldValidator
     private let authorValidator: FieldValidator
     private let isbnValidator: FieldValidator
@@ -31,5 +33,20 @@ final class BookFormViewModel: ObservableObject {
         self.titleValidator = titleValidator
         self.authorValidator = authorValidator
         self.isbnValidator = isbnValidator
+    }
+    
+    func saveBook() {
+        guard canSave else { return }
+        
+        let newBook = Book(title: title, author: author, isbn: isbn)
+        savedBooks.append(newBook)
+        
+        resetForm()
+    }
+
+    private func resetForm() {
+        title = ""
+        author = ""
+        isbn = ""
     }
 }
