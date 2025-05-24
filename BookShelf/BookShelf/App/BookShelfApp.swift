@@ -10,11 +10,16 @@ import SwiftUI
 @main
 struct BookShelfApp: App {
     let persistenceController = PersistenceController.shared
+    @State private var showingSplash = true
     
     var body: some Scene {
         WindowGroup {
-            ScanView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            if showingSplash {
+                LaunchScreenView(isActive: $showingSplash)
+            } else {
+                ScanView()
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            }
         }
     }
 }
