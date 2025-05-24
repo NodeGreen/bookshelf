@@ -35,4 +35,32 @@ final class BookFormViewModelTests: XCTestCase {
         viewModel.isbn = "9780132350884"
         XCTAssertTrue(viewModel.canSave)
     }
+    
+    func testCanSaveIsFalseWhenOneValidatorFails() {
+        let viewModel = BookFormViewModel(
+            titleValidator: AlwaysValidValidator(),
+            authorValidator: AlwaysValidValidator(),
+            isbnValidator: AlwaysInvalidValidator()
+        )
+        
+        viewModel.title = "Clean Code"
+        viewModel.author = "Robert Martin"
+        viewModel.isbn = "1234567890123"
+
+        XCTAssertFalse(viewModel.canSave)
+    }
+    
+    func testCanSaveIsTrueWhenAllValidatorSucced() {
+        let viewModel = BookFormViewModel(
+            titleValidator: AlwaysValidValidator(),
+            authorValidator: AlwaysValidValidator(),
+            isbnValidator: AlwaysValidValidator()
+        )
+        
+        viewModel.title = "Clean Code"
+        viewModel.author = "Robert Martin"
+        viewModel.isbn = "1234567890123"
+
+        XCTAssertTrue(viewModel.canSave)
+    }
 }
