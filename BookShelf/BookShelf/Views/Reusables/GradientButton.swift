@@ -44,3 +44,9 @@ struct GradientButton: View {
         .buttonStyle(.plain)
     }
 }
+
+#Preview {
+    GradientButton(title: "Bottone", icon: "person.crop.circle", colors: [.red,.orange]) {
+        
+    }
+}

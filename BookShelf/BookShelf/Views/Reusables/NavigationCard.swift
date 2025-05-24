@@ -38,3 +38,7 @@ struct NavigationCard: View {
         .buttonStyle(.plain)
     }
 }
+
+#Preview {
+    NavigationCard(title: "Navigazione", icon: "person.crop.circle", destination: AnyView(Rectangle()))
+}

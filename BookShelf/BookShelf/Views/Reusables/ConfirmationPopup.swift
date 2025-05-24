@@ -64,3 +64,9 @@ extension View {
         ))
     }
 }
+
+#Preview {
+    Rectangle()
+        .fill(Color.red)
+        .confirmationPopup(isPresented: .constant(true), title: "test", message: "test", confirmAction: {})
+}

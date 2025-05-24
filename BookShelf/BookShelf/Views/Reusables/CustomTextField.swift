@@ -43,3 +43,7 @@ struct CustomTextField: View {
         .padding(.vertical, 4)
     }
 }
+
+#Preview {
+    CustomTextField(title: "Nome", placeholder: "Inserisci il nome", text: .constant(""), icon: "person.circle", keyboardType: .default)
+}

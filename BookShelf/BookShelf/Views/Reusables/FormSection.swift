@@ -28,3 +28,9 @@ struct FormSection: View {
         )
     }
 }
+
+#Preview {
+    FormSection {
+        Text("test")
+    }
+}

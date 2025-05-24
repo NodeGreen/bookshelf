@@ -48,3 +48,7 @@ struct EmptyStateView: View {
         .padding(.vertical, 60)
     }
 }
+
+#Preview {
+    EmptyStateView(title: "titolo", icon: "person.crop.circle", description: "Descrizione")
+}

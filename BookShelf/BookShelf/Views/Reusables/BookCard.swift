@@ -62,3 +62,7 @@ struct BookCard: View {
         )
     }
 }
+
+#Preview {
+    BookCard(book: Book(title: "Brave New World", author: "Aldous Huxley", isbn: "9780060850524"))
+}
