@@ -61,11 +61,6 @@
 			path = BookShelfTests;
 			sourceTree = "<group>";
 		};
-		AEA1B3822DE22065000EEA7F /* BookShelfUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = BookShelfUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +93,6 @@
 			children = (
 				AEA1B36A2DE22063000EEA7F /* BookShelf */,
 				AEA1B3782DE22065000EEA7F /* BookShelfTests */,
-				AEA1B3822DE22065000EEA7F /* BookShelfUITests */,
 				AEA1B3692DE22063000EEA7F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -173,9 +167,6 @@
 			);
 			dependencies = (
 				AEA1B3812DE22065000EEA7F /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				AEA1B3822DE22065000EEA7F /* BookShelfUITests */,
 			);
 			name = BookShelfUITests;
 			packageProductDependencies = (
