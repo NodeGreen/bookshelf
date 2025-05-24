@@ -15,14 +15,21 @@ final class BookFormViewModel: ObservableObject {
     @Published var author: String = ""
     @Published var isbn: String = ""
     
+    private let titleValidator: FieldValidator
+    private let authorValidator: FieldValidator
+    private let isbnValidator: FieldValidator
     
     var canSave: Bool {
-        !title.trimmingCharacters(in: .whitespaces).isEmpty &&
-        !author.trimmingCharacters(in: .whitespaces).isEmpty &&
-        !isbn.trimmingCharacters(in: .whitespaces).isEmpty
+        titleValidator.validate(title) &&
+        authorValidator.validate(author) &&
+        isbnValidator.validate(isbn)
     }
     
-    init() {
-        
+    init(titleValidator: FieldValidator = TitleValidator(),
+         authorValidator: FieldValidator = AuthorValidator(),
+         isbnValidator: FieldValidator = ISBNValidator()) {
+        self.titleValidator = titleValidator
+        self.authorValidator = authorValidator
+        self.isbnValidator = isbnValidator
     }
 }
