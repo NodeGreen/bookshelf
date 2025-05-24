@@ -7,6 +7,7 @@
 import Foundation
 import Combine
 import CoreData
+
 final class BookFormViewModel: ObservableObject {
     
     @Published var title: String = ""
