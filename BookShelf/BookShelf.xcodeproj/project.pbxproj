@@ -29,9 +29,30 @@
 		AEA1B37F2DE22065000EEA7F /* BookShelfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookShelfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AEA2F0522DE23E00007AC5BE /* Exceptions for "BookShelf" folder in "BookShelfTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Persistence/ShelfScanDataModel.xcdatamodeld,
+			);
+			target = AEA1B3742DE22065000EEA7F /* BookShelfTests */;
+		};
+		AEA2F0542DE23ED5007AC5BE /* Exceptions for "BookShelf" folder in "BookShelfUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Persistence/ShelfScanDataModel.xcdatamodeld,
+			);
+			target = AEA1B37E2DE22065000EEA7F /* BookShelfUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AEA1B36A2DE22063000EEA7F /* BookShelf */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AEA2F0522DE23E00007AC5BE /* Exceptions for "BookShelf" folder in "BookShelfTests" target */,
+				AEA2F0542DE23ED5007AC5BE /* Exceptions for "BookShelf" folder in "BookShelfUITests" target */,
+			);
 			path = BookShelf;
 			sourceTree = "<group>";
 		};

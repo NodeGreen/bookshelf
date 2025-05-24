@@ -10,9 +10,16 @@ import SwiftUI
 
 struct ScanView: View {
     
+    @Environment(\.managedObjectContext) var context
+
     @State private var scannedISBN: String? = nil
-    @StateObject private var viewModel = BookFormViewModel()
     
+    @StateObject private var viewModel: BookFormViewModel
+
+    init() {
+        _viewModel = StateObject(wrappedValue: BookFormViewModel(context: PersistenceController.shared.container.viewContext))
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {

@@ -4,11 +4,9 @@
 //
 //  Created by Endo on 24/05/25.
 //
-
-
 import Foundation
 import Combine
-
+import CoreData
 final class BookFormViewModel: ObservableObject {
     
     @Published var title: String = ""
@@ -20,34 +18,71 @@ final class BookFormViewModel: ObservableObject {
     private let titleValidator: FieldValidator
     private let authorValidator: FieldValidator
     private let isbnValidator: FieldValidator
+    private let context: NSManagedObjectContext
     
+    private var fetchedEntities: [BookEntity] = []
     var canSave: Bool {
         titleValidator.validate(title) &&
         authorValidator.validate(author) &&
         isbnValidator.validate(isbn)
     }
     
-    init(titleValidator: FieldValidator = TitleValidator(),
+    init(context: NSManagedObjectContext,
+         titleValidator: FieldValidator = TitleValidator(),
          authorValidator: FieldValidator = AuthorValidator(),
          isbnValidator: FieldValidator = ISBNValidator()) {
+        self.context = context
         self.titleValidator = titleValidator
         self.authorValidator = authorValidator
         self.isbnValidator = isbnValidator
+        fetchSavedBooks()
     }
     
     func saveBook() {
         guard canSave else { return }
         
-        let newBook = Book(title: title, author: author, isbn: isbn)
-        savedBooks.append(newBook)
+        let book = NSEntityDescription.insertNewObject(forEntityName: "BookEntity", into: context) as! BookEntity
+        book.id = UUID()
+        book.title = title
+        book.author = author
+        book.isbn = isbn
         
-        resetForm()
+        do {
+            try context.save()
+            fetchSavedBooks()
+            resetForm()
+        } catch {
+            print("Errore nel salvare: \(error)")
+        }
     }
     
     func deleteBook(at offsets: IndexSet) {
-        savedBooks.remove(atOffsets: offsets)
+        for index in offsets {
+            guard index < fetchedEntities.count else { continue }
+            let book = fetchedEntities[index]
+            context.delete(book)
+        }
+        do {
+            try context.save()
+            fetchSavedBooks()
+        } catch {
+            print("Errore eliminazione: \(error)")
+        }
     }
-
+    
+    private func fetchSavedBooks() {
+        let request = BookEntity.fetchRequest()
+        request.sortDescriptors = []
+        do {
+            fetchedEntities = try context.fetch(request)
+            savedBooks = fetchedEntities.map {
+                $0.toModel()
+            }
+        } catch {
+            print("Errore fetch: \(error)")
+        }
+    }
+    
     private func resetForm() {
         title = ""
         author = ""

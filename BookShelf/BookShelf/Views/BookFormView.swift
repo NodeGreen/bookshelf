@@ -49,6 +49,14 @@ struct BookFormView: View {
 }
 
 
+#if DEBUG
+import CoreData
+
 #Preview {
-    BookFormView(viewModel: BookFormViewModel())
+    let context = PersistenceController(inMemory: true).container.viewContext
+    let vm = BookFormViewModel(context: context)
+    return NavigationStack {
+        BookFormView(viewModel: vm, prefillISBN: "9781234567890")
+    }
 }
+#endif
