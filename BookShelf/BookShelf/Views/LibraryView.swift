@@ -95,3 +95,15 @@ struct LibraryView: View {
         }
     }
 }
+
+#if DEBUG
+import CoreData
+#Preview() {
+    let context = PersistenceController(inMemory: true).container.viewContext
+    let vm = BookFormViewModel(context: context)
+    return NavigationStack {
+        LibraryView(viewModel: vm)
+    }
+}
+
+#endif

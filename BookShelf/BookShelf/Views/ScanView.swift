@@ -106,3 +106,7 @@ struct ScanView: View {
         }
     }
 }
+
+#Preview {
+    ScanView()
+}
