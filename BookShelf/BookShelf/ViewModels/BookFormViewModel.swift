@@ -4,24 +4,31 @@
 //
 //  Created by Endo on 24/05/25.
 //
+
 import Foundation
 import Combine
 import CoreData
+import CodeScanner
 
 final class BookFormViewModel: ObservableObject {
     
     @Published var title: String = ""
     @Published var author: String = ""
     @Published var isbn: String = ""
-    
+    @Published var scannedISBN: String? = nil
+    @Published var isShowingScanner = false
     @Published private(set) var savedBooks: [Book] = []
     
     private let titleValidator: FieldValidator
     private let authorValidator: FieldValidator
     private let isbnValidator: FieldValidator
     private let context: NSManagedObjectContext
+    private let permissionManager: PermissionsManager
+    
+    
     
     private var fetchedEntities: [BookEntity] = []
+    
     var canSave: Bool {
         titleValidator.validate(title) &&
         authorValidator.validate(author) &&
@@ -31,11 +38,13 @@ final class BookFormViewModel: ObservableObject {
     init(context: NSManagedObjectContext,
          titleValidator: FieldValidator = TitleValidator(),
          authorValidator: FieldValidator = AuthorValidator(),
-         isbnValidator: FieldValidator = ISBNValidator()) {
+         isbnValidator: FieldValidator = ISBNValidator(),
+         permssionManager: PermissionsManager = PermissionsManager()) {
         self.context = context
         self.titleValidator = titleValidator
         self.authorValidator = authorValidator
         self.isbnValidator = isbnValidator
+        self.permissionManager = permssionManager
         fetchSavedBooks()
     }
     
@@ -53,7 +62,7 @@ final class BookFormViewModel: ObservableObject {
             fetchSavedBooks()
             resetForm()
         } catch {
-            print("Errore nel salvare: \(error)")
+            print("❌ Errore nel salvare: \(error)")
         }
     }
     
@@ -67,7 +76,7 @@ final class BookFormViewModel: ObservableObject {
             try context.save()
             fetchSavedBooks()
         } catch {
-            print("Errore eliminazione: \(error)")
+            print("❌ Errore eliminazione: \(error)")
         }
     }
     
@@ -80,7 +89,7 @@ final class BookFormViewModel: ObservableObject {
                 $0.toModel()
             }
         } catch {
-            print("Errore fetch: \(error)")
+            print("❌ Errore fetch: \(error)")
         }
     }
     
@@ -92,5 +101,35 @@ final class BookFormViewModel: ObservableObject {
     
     func simulateScanISBN() -> String {
         return "978" + String(Int.random(in: 1000000000...9999999999))
+    }
+    
+    func startScanning() {
+        #if targetEnvironment(simulator)
+        scannedISBN = simulateScanISBN()
+        #else
+        if permissionManager.hasCameraPermission() {
+            isShowingScanner = true
+        } else {
+            print("❌ Permessi non concessi")
+        }
+        #endif
+    }
+    
+    func handleScanResult(result: Result<ScanResult, ScanError>) {
+        isShowingScanner = false
+        
+        switch result {
+        case .success(let scanResult):
+            let code = scanResult.string
+            
+            if isbnValidator.validate(code) {
+                scannedISBN = code
+            } else {
+                print("❌ Codice non valido: \(code)")
+            }
+            
+        case .failure(let error):
+            print("❌ Errore scansione: \(error.localizedDescription)")
+        }
     }
 }

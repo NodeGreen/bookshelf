@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AEC74D772DE28878004694CB /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = AEC74D762DE28878004694CB /* CodeScanner */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		AEA1B3762DE22065000EEA7F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -44,12 +48,20 @@
 			);
 			target = AEA1B37E2DE22065000EEA7F /* BookShelfUITests */;
 		};
+		AEC74D792DE28AEA004694CB /* Exceptions for "BookShelf" folder in "BookShelf" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = AEA1B3672DE22063000EEA7F /* BookShelf */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AEA1B36A2DE22063000EEA7F /* BookShelf */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				AEC74D792DE28AEA004694CB /* Exceptions for "BookShelf" folder in "BookShelf" target */,
 				AEA2F0522DE23E00007AC5BE /* Exceptions for "BookShelf" folder in "BookShelfTests" target */,
 				AEA2F0542DE23ED5007AC5BE /* Exceptions for "BookShelf" folder in "BookShelfUITests" target */,
 			);
@@ -68,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEC74D772DE28878004694CB /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +140,7 @@
 			);
 			name = BookShelf;
 			packageProductDependencies = (
+				AEC74D762DE28878004694CB /* CodeScanner */,
 			);
 			productName = BookShelf;
 			productReference = AEA1B3682DE22063000EEA7F /* BookShelf.app */;
@@ -207,6 +221,9 @@
 			);
 			mainGroup = AEA1B35F2DE22063000EEA7F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AEC74D752DE28878004694CB /* XCRemoteSwiftPackageReference "CodeScanner" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AEA1B3692DE22063000EEA7F /* Products */;
 			projectDirPath = "";
@@ -412,8 +429,10 @@
 				DEVELOPMENT_TEAM = C452Q6VA5S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BookShelf/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BookShelf;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(MARKETING_VERSION)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -443,8 +462,10 @@
 				DEVELOPMENT_TEAM = C452Q6VA5S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BookShelf/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BookShelf;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(MARKETING_VERSION)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -576,6 +597,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AEC74D752DE28878004694CB /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = exactVersion;
+				version = 2.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AEC74D762DE28878004694CB /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AEC74D752DE28878004694CB /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AEA1B3602DE22063000EEA7F /* Project object */;
 }

@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
+import CodeScanner
 
 struct ScanView: View {
     @Environment(\.managedObjectContext) var context
-    @State private var scannedISBN: String? = nil
     @StateObject private var viewModel: BookFormViewModel
     
     init() {
@@ -53,10 +53,10 @@ struct ScanView: View {
                         title: "Scansiona ISBN",
                         icon: "camera.viewfinder"
                     ) {
-                        scannedISBN = viewModel.simulateScanISBN()
+                        viewModel.startScanning()
                     }
                     
-                    if let isbn = scannedISBN {
+                    if let isbn = viewModel.scannedISBN {
                         VStack(spacing: 12) {
                             HStack {
                                 Image(systemName: "checkmark.circle.fill")
@@ -80,7 +80,7 @@ struct ScanView: View {
                             }
                         }
                         .transition(.opacity.combined(with: .scale))
-                        .animation(.spring(response: 0.5), value: scannedISBN)
+                        .animation(.spring(response: 0.5), value: viewModel.scannedISBN)
                     }
                 }
                 
@@ -104,9 +104,16 @@ struct ScanView: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
         }
+        .sheet(isPresented: $viewModel.isShowingScanner) {
+            CodeScannerView(
+                codeTypes: [.ean13, .ean8, .upce],
+                simulatedData: "9781234567890",
+                completion: viewModel.handleScanResult
+            )
+        }
     }
 }
 
 #Preview {
     ScanView()
-}
+}    

@@ -78,21 +78,21 @@ struct LibraryView: View {
                 }
             }
         }
-        .confirmationPopup(
-            isPresented: $showDeleteConfirmation,
-            title: "Elimina libro",
-            message: bookToDelete != nil ? "Sei sicuro di voler eliminare \"\(bookToDelete!.title)\"?" : "Sei sicuro di voler eliminare questo libro?",
-            confirmTitle: "Elimina",
-            cancelTitle: "Annulla"
-        ) {
-            if let book = bookToDelete {
-                viewModel.deleteBook(at: IndexSet(integer: book.index))
-                withAnimation(.spring(response: 0.3)) {
-                    isEditMode = false
-                }
-            }
-            bookToDelete = nil
-        }
+        .genericPopup(
+           isPresented: $showDeleteConfirmation,
+           title: "Elimina libro",
+           message: bookToDelete != nil ? "Sei sicuro di voler eliminare \"\(bookToDelete!.title)\"?" : "Sei sicuro di voler eliminare questo libro?",
+           primaryButton: PopupButton(title: "Elimina", role: .destructive) {
+               if let book = bookToDelete {
+                   viewModel.deleteBook(at: IndexSet(integer: book.index))
+                   withAnimation(.spring(response: 0.3)) {
+                       isEditMode = false
+                   }
+               }
+               bookToDelete = nil
+           },
+           secondaryButton: PopupButton(title: "Annulla", role: .cancel)
+        )
     }
 }
 
