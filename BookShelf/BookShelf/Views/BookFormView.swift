@@ -68,8 +68,8 @@ struct BookFormView: View {
                         icon: "checkmark",
                         colors: viewModel.canSave ? [.green, .green.opacity(0.8)] : [.gray, .gray.opacity(0.8)]
                     ) {
+                        viewModel.saveBook()
                         if viewModel.canSave {
-                            viewModel.saveBook()
                             dismiss()
                         }
                     }
@@ -97,16 +97,6 @@ struct BookFormView: View {
                 viewModel.isbn = prefill
             }
         }
+        .withErrorHandling(errorHandler: viewModel.errorHandler)
     }
 }
-
-#if DEBUG
-import CoreData
-#Preview {
-    let context = PersistenceController(inMemory: true).container.viewContext
-    let vm = BookFormViewModel(context: context)
-    return NavigationStack {
-        BookFormView(viewModel: vm, prefillISBN: "9781234567890")
-    }
-}
-#endif

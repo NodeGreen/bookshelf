@@ -111,9 +111,6 @@ struct ScanView: View {
                 completion: viewModel.handleScanResult
             )
         }
+        .withErrorHandling(errorHandler: viewModel.errorHandler)
     }
 }
-
-#Preview {
-    ScanView()
-}    

@@ -19,13 +19,13 @@ final class BookFormViewModel: ObservableObject {
     @Published var isShowingScanner = false
     @Published private(set) var savedBooks: [Book] = []
     
+    let errorHandler: ErrorHandler
+    
     private let titleValidator: FieldValidator
     private let authorValidator: FieldValidator
     private let isbnValidator: FieldValidator
     private let context: NSManagedObjectContext
     private let permissionManager: PermissionsManager
-    
-    
     
     private var fetchedEntities: [BookEntity] = []
     
@@ -39,17 +39,27 @@ final class BookFormViewModel: ObservableObject {
          titleValidator: FieldValidator = TitleValidator(),
          authorValidator: FieldValidator = AuthorValidator(),
          isbnValidator: FieldValidator = ISBNValidator(),
-         permssionManager: PermissionsManager = PermissionsManager()) {
+         permssionManager: PermissionsManager = PermissionsManager(), errorHandler: ErrorHandler = ErrorHandler()) {
         self.context = context
         self.titleValidator = titleValidator
         self.authorValidator = authorValidator
         self.isbnValidator = isbnValidator
         self.permissionManager = permssionManager
+        self.errorHandler = errorHandler
         fetchSavedBooks()
     }
     
     func saveBook() {
-        guard canSave else { return }
+        guard canSave else {
+            if !titleValidator.validate(title) {
+                errorHandler.handle(.bookValidationFailed("Titolo"))
+            } else if !authorValidator.validate(author) {
+                errorHandler.handle(.bookValidationFailed("Autore"))
+            } else if !isbnValidator.validate(isbn) {
+                errorHandler.handle(.invalidISBN(isbn))
+            }
+            return
+        }
         
         let book = NSEntityDescription.insertNewObject(forEntityName: "BookEntity", into: context) as! BookEntity
         book.id = UUID()
@@ -62,7 +72,7 @@ final class BookFormViewModel: ObservableObject {
             fetchSavedBooks()
             resetForm()
         } catch {
-            print("❌ Errore nel salvare: \(error)")
+            errorHandler.handle(.coreDataSaveFailed(error))
         }
     }
     
@@ -76,7 +86,7 @@ final class BookFormViewModel: ObservableObject {
             try context.save()
             fetchSavedBooks()
         } catch {
-            print("❌ Errore eliminazione: \(error)")
+            errorHandler.handle(.coreDataDeleteFailed(error))
         }
     }
     
@@ -89,7 +99,7 @@ final class BookFormViewModel: ObservableObject {
                 $0.toModel()
             }
         } catch {
-            print("❌ Errore fetch: \(error)")
+            errorHandler.handle(.coreDataFetchFailed(error))
         }
     }
     
@@ -97,6 +107,7 @@ final class BookFormViewModel: ObservableObject {
         title = ""
         author = ""
         isbn = ""
+        scannedISBN = nil
     }
     
     func simulateScanISBN() -> String {
@@ -110,7 +121,7 @@ final class BookFormViewModel: ObservableObject {
         if permissionManager.hasCameraPermission() {
             isShowingScanner = true
         } else {
-            print("❌ Permessi non concessi")
+            errorHandler.handle(.cameraPermissionDenied)
         }
         #endif
     }
@@ -125,11 +136,11 @@ final class BookFormViewModel: ObservableObject {
             if isbnValidator.validate(code) {
                 scannedISBN = code
             } else {
-                print("❌ Codice non valido: \(code)")
+                errorHandler.handle(.invalidISBN(code))
             }
             
         case .failure(let error):
-            print("❌ Errore scansione: \(error.localizedDescription)")
+            errorHandler.handle(.scanningFailed(error))
         }
     }
 }

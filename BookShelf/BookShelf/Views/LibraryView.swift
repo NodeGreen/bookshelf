@@ -93,17 +93,6 @@ struct LibraryView: View {
            },
            secondaryButton: PopupButton(title: "Annulla", role: .cancel)
         )
+        .withErrorHandling(errorHandler: viewModel.errorHandler)
     }
 }
-
-#if DEBUG
-import CoreData
-#Preview() {
-    let context = PersistenceController(inMemory: true).container.viewContext
-    let vm = BookFormViewModel(context: context)
-    return NavigationStack {
-        LibraryView(viewModel: vm)
-    }
-}
-
-#endif
